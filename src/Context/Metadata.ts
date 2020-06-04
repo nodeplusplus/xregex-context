@@ -1,8 +1,8 @@
-import { IContextMetadataSnapshot } from "../types";
+import { IXContextMetadataSnapshot } from "../types";
 import { Metadata } from "../Metadata";
 
-export class ContextMetadata extends Metadata<IContextMetadataSnapshot> {
-  constructor(props?: Partial<IContextMetadataSnapshot>) {
+export class XContextMetadata extends Metadata<IXContextMetadataSnapshot> {
+  constructor(props?: Partial<IXContextMetadataSnapshot>) {
     super({ ...props, round: 0 });
   }
 

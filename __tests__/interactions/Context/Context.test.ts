@@ -2,15 +2,15 @@ import faker from "faker";
 import _ from "lodash";
 
 import {
-  Context,
+  XContext,
   Request,
   Response,
   Metadata,
   Pagination,
-  IContextMetadataSnapshot,
+  IXContextMetadataSnapshot,
 } from "../../../src";
 
-describe("Context", () => {
+describe("XContext", () => {
   const payload = {
     url: faker.internet.url(),
     siteName: faker.internet.domainName(),
@@ -19,7 +19,7 @@ describe("Context", () => {
 
   describe("constructor", () => {
     it("should init with default value", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
 
       const snapshot = context.snapshot();
       expect(snapshot.payload).toEqual(payload);
@@ -32,8 +32,8 @@ describe("Context", () => {
 
     it("should allow init with custom value", () => {
       const id = faker.random.uuid();
-      const prev = new Context(payload, id).toObject();
-      const context = new Context(
+      const prev = new XContext(payload, id).toObject();
+      const context = new XContext(
         payload,
         prev.id,
         new Request(),
@@ -56,7 +56,7 @@ describe("Context", () => {
 
   describe("hasError", () => {
     it("should return error status", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
 
       expect(context.hasError()).toBe(false);
     });
@@ -64,7 +64,7 @@ describe("Context", () => {
 
   describe("setError", () => {
     it("should set error of context successfully", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
       context.setError(new Error("test error"));
 
       expect(context.hasError()).toBe(true);
@@ -73,7 +73,7 @@ describe("Context", () => {
 
   describe("snapshot", () => {
     it("should return snapshot of context", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
       const snapshot = context.next().snapshot();
 
       expect(snapshot.payload).toEqual(payload);
@@ -88,7 +88,7 @@ describe("Context", () => {
 
   describe("toObject", () => {
     it("should return object without error property", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
 
       const object = context.toObject();
 
@@ -102,7 +102,7 @@ describe("Context", () => {
     });
 
     it("should return object with error property if error was set", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
       const error = new Error("test error");
       context.setError(error);
 
@@ -120,7 +120,7 @@ describe("Context", () => {
 
   describe("use", () => {
     it("should do nothing if extended properties was falsy", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
       const snapshot = context.snapshot();
 
       context.use();
@@ -130,10 +130,10 @@ describe("Context", () => {
     });
 
     it("should limit configs could be used", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
       const snapshot = context.snapshot();
 
-      const prev = new Context(payload).snapshot();
+      const prev = new XContext(payload).snapshot();
       context.use({ prev } as any);
       const extendedSnapshot = context.snapshot();
 
@@ -142,7 +142,7 @@ describe("Context", () => {
     });
 
     it("should use configs of child components", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
       const snapshot = context.snapshot();
 
       const request = { url: faker.internet.url() };
@@ -150,32 +150,32 @@ describe("Context", () => {
       const metadata = { "proxy/quota/id": faker.internet.ip() };
       const pagination = new Pagination(1, 10).snapshot();
       context.use({ request, response, metadata, pagination });
-      const extendedContext = context.snapshot();
+      const extendedXContext = context.snapshot();
 
-      expect(snapshot).not.toEqual(extendedContext);
+      expect(snapshot).not.toEqual(extendedXContext);
 
       // Request
       const extendedRequest = _.pick(
-        extendedContext.request,
+        extendedXContext.request,
         Object.keys(request)
       );
       expect(extendedRequest).toEqual(request);
 
       // Response
       const extendedResponse = _.pick(
-        extendedContext.response,
+        extendedXContext.response,
         Object.keys(response)
       );
       expect(extendedResponse).toEqual(response);
 
       // Metadata
       const extendedMetadata = _.pick(
-        extendedContext.metadata,
+        extendedXContext.metadata,
         Object.keys(metadata)
       );
       expect(extendedMetadata).toEqual(metadata);
 
-      expect(extendedContext.pagination).toEqual(pagination);
+      expect(extendedXContext.pagination).toEqual(pagination);
     });
   });
 
@@ -183,9 +183,9 @@ describe("Context", () => {
     it("should return next instance we need", () => {
       const id = faker.random.uuid();
       const url = faker.internet.url();
-      const metadata = new Metadata<IContextMetadataSnapshot>({ round: 0 });
+      const metadata = new Metadata<IXContextMetadataSnapshot>({ round: 0 });
       const pagination = new Pagination();
-      const context = new Context(
+      const context = new XContext(
         payload,
         id,
         new Request(url),
@@ -212,22 +212,22 @@ describe("Context", () => {
     });
 
     it("should not create chain of previous value", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
       const firstCtx = context.next();
       const secondCtx = firstCtx.next();
 
-      const secondContext = secondCtx.snapshot();
+      const secondXContext = secondCtx.snapshot();
 
-      expect(secondContext.prev).toBeTruthy();
+      expect(secondXContext.prev).toBeTruthy();
       expect(
-        secondContext.prev && (secondContext.prev as any).prev
+        secondXContext.prev && (secondXContext.prev as any).prev
       ).toBeFalsy();
     });
   });
 
   describe("clone", () => {
     it("should return clone of context with SAME payload", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
       const snapshot = context.snapshot();
 
       const cloneCtx = context.clone();
@@ -242,7 +242,7 @@ describe("Context", () => {
     });
 
     it("should return clone of context with new payload", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
       const snapshot = context.snapshot();
 
       const newPayload = {
@@ -264,7 +264,7 @@ describe("Context", () => {
 
   describe("toString", () => {
     it("should override toString method", () => {
-      const context = new Context(payload);
+      const context = new XContext(payload);
       expect(String(context)).toBe(JSON.stringify(context.toObject()));
     });
   });

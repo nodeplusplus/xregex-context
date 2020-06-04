@@ -3,9 +3,9 @@ import _ from "lodash";
 
 import {
   GenericObject,
-  IContextObject,
-  IContextSnapshot,
-  Context,
+  IXContextObject,
+  IXContextSnapshot,
+  XContext,
   Pagination,
   Request,
   Response,
@@ -19,9 +19,9 @@ describe("xregex-context", () => {
   };
 
   describe("simple flow", () => {
-    let ctx = new Context(payload);
-    let snapshot: IContextSnapshot;
-    let prev: IContextObject;
+    let ctx = new XContext(payload);
+    let snapshot: IXContextSnapshot;
+    let prev: IXContextObject;
 
     it("should use some configs and use default for remain", () => {
       const configs = { request: { url: faker.internet.url() } };
@@ -83,7 +83,7 @@ describe("xregex-context", () => {
     const userAgentId = "d89a5df993c1338c5235193f56aa2992";
     const proxyName = "proxy/id";
     const proxyId = "127.0.0.1";
-    const ctx = new Context(payload);
+    const ctx = new XContext(payload);
 
     let metadata: GenericObject = {};
 

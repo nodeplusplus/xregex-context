@@ -69,7 +69,7 @@ describe("Factory", () => {
     });
   });
 
-  describe("createContext", () => {
+  describe("createXContext", () => {
     const payload = {
       url: faker.internet.url(),
       siteName: faker.internet.domainName(),
@@ -78,7 +78,7 @@ describe("Factory", () => {
     const id = faker.random.uuid();
 
     it("should create fresh context successfully", () => {
-      const context = Factory.createContext();
+      const context = Factory.createXContext();
 
       const snapshot = context.snapshot();
       expect(snapshot.payload).toEqual({});
@@ -90,7 +90,7 @@ describe("Factory", () => {
     });
 
     it("should create context with properties as well", () => {
-      const context = Factory.createContext({ payload, id });
+      const context = Factory.createXContext({ payload, id });
 
       const snapshot = context.snapshot();
       expect(snapshot.payload).toEqual(payload);

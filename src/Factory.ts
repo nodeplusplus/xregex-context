@@ -2,12 +2,12 @@ import {
   IRequestSnapshot,
   IPaginationSnapshot,
   DeepPartial,
-  IContextSnapshot,
+  IXContextSnapshot,
 } from "./types";
 import { Request } from "./Request";
 import { Response } from "./Response";
 import { Pagination } from "./Pagination";
-import { Context, ContextMetadata } from "./Context";
+import { XContext, XContextMetadata } from "./Context";
 
 export class Factory {
   public static createRequest(request?: Partial<IRequestSnapshot>) {
@@ -27,15 +27,15 @@ export class Factory {
     return new Pagination(props.page, props.limit);
   }
 
-  public static createContext(ctx?: DeepPartial<IContextSnapshot>) {
-    const props: DeepPartial<IContextSnapshot> = { ...ctx };
+  public static createXContext(ctx?: DeepPartial<IXContextSnapshot>) {
+    const props: DeepPartial<IXContextSnapshot> = { ...ctx };
 
-    return new Context(
+    return new XContext(
       props.payload || {},
       props.id,
       Factory.createRequest(props.request),
       new Response(),
-      new ContextMetadata(props.metadata),
+      new XContextMetadata(props.metadata),
       Factory.createPagination(props.pagination)
     );
   }

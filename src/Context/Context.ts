@@ -2,30 +2,30 @@ import { nanoid } from "nanoid";
 import _ from "lodash";
 
 import {
-  IContext,
+  IXContext,
   IRequest,
   IResponse,
   IMetadata,
-  IContextSnapshot,
-  IContextMetadataSnapshot,
+  IXContextSnapshot,
+  IXContextMetadataSnapshot,
   GenericObject,
-  IContextObject,
+  IXContextObject,
   DeepPartial,
   IPagination,
 } from "../types";
 import { Request } from "../Request";
 import { Response } from "../Response";
 import { Pagination } from "../Pagination";
-import { ContextMetadata } from "./Metadata";
+import { XContextMetadata } from "./Metadata";
 
-export class Context<P = any> implements IContext<P> {
+export class XContext<P = any> implements IXContext<P> {
   public readonly payload: P;
   public readonly id: string;
   public readonly request: IRequest;
   public readonly response: IResponse;
-  public readonly metadata: IMetadata<IContextMetadataSnapshot>;
+  public readonly metadata: IMetadata<IXContextMetadataSnapshot>;
   public readonly pagination: IPagination;
-  public readonly prev?: Readonly<IContextObject>;
+  public readonly prev?: Readonly<IXContextObject>;
 
   public readonly items: GenericObject[] = [];
   private error?: { message: string; stack?: string };
@@ -35,15 +35,15 @@ export class Context<P = any> implements IContext<P> {
     id?: string,
     request?: IRequest,
     response?: IResponse,
-    metadata?: IMetadata<IContextMetadataSnapshot>,
+    metadata?: IMetadata<IXContextMetadataSnapshot>,
     pagination?: IPagination,
-    prev?: IContextObject
+    prev?: IXContextObject
   ) {
     this.payload = Object.isFrozen(payload) ? payload : Object.freeze(payload);
     this.id = id || nanoid();
     this.request = request || new Request();
     this.response = response || new Response();
-    this.metadata = metadata || new ContextMetadata();
+    this.metadata = metadata || new XContextMetadata();
     this.pagination = pagination || new Pagination();
     this.prev = prev && Object.freeze(prev);
   }
@@ -55,7 +55,7 @@ export class Context<P = any> implements IContext<P> {
     const metadata = this.metadata.next();
     const pagination = this.pagination.next();
 
-    return new Context(
+    return new XContext(
       this.payload,
       this.id,
       new Request(),
@@ -67,7 +67,7 @@ export class Context<P = any> implements IContext<P> {
   }
 
   public clone(payload?: P) {
-    return new Context(
+    return new XContext(
       payload || this.payload,
       this.id,
       this.request,
@@ -78,7 +78,7 @@ export class Context<P = any> implements IContext<P> {
     );
   }
 
-  public use(props?: DeepPartial<IContextSnapshot>) {
+  public use(props?: DeepPartial<IXContextSnapshot>) {
     if (!props) return;
     // dont allow modify both id and payload
     if (props.request) this.request.use(props.request);
@@ -88,7 +88,7 @@ export class Context<P = any> implements IContext<P> {
   }
 
   public snapshot() {
-    const snapshot: IContextSnapshot = {
+    const snapshot: IXContextSnapshot = {
       ...this.toObject(),
       prev: this.prev,
       items: this.items,
@@ -97,7 +97,7 @@ export class Context<P = any> implements IContext<P> {
   }
 
   public toObject() {
-    const object: IContextObject = {
+    const object: IXContextObject = {
       payload: this.payload,
       id: this.id,
       request: this.request.toObject(),
