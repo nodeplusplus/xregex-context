@@ -28,7 +28,7 @@ export class XContext<P = any> implements IXContext<P> {
   public readonly prev?: Readonly<IXContextObject>;
 
   public readonly items: GenericObject[] = [];
-  private error?: { message: string; stack?: string };
+  private error?: { name: string; message: string; stack?: string };
 
   constructor(
     payload: P,
@@ -55,7 +55,7 @@ export class XContext<P = any> implements IXContext<P> {
     const metadata = this.metadata.next();
     const pagination = this.pagination.next();
 
-    return new XContext(
+    const context = new XContext(
       this.payload,
       this.id,
       new Request(),
@@ -64,10 +64,14 @@ export class XContext<P = any> implements IXContext<P> {
       pagination,
       prev
     );
+
+    // Make sure error will still exist in next context
+    if (this.error) context.setError(this.error);
+    return context;
   }
 
   public clone(payload?: P) {
-    return new XContext(
+    const context = new XContext(
       payload || this.payload,
       this.id,
       this.request,
@@ -76,6 +80,10 @@ export class XContext<P = any> implements IXContext<P> {
       this.pagination,
       this.prev
     );
+
+    // Make sure error will still exist in cloned context
+    if (this.error) context.setError(this.error);
+    return context;
   }
 
   public use(props?: DeepPartial<IXContextSnapshot>) {
@@ -114,7 +122,7 @@ export class XContext<P = any> implements IXContext<P> {
   }
 
   public setError(error: Error) {
-    this.error = _.pick(error, ["message", "stack"]);
+    this.error = _.pick(error, ["name", "message", "stack"]);
   }
 
   public hasError() {

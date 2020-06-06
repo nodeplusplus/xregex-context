@@ -65,7 +65,7 @@ describe("XContext", () => {
   describe("setError", () => {
     it("should set error of context successfully", () => {
       const context = new XContext(payload);
-      context.setError(new Error("test error"));
+      context.setError(new Error("TEST"));
 
       expect(context.hasError()).toBe(true);
     });
@@ -103,7 +103,7 @@ describe("XContext", () => {
 
     it("should return object with error property if error was set", () => {
       const context = new XContext(payload);
-      const error = new Error("test error");
+      const error = new Error("TEST");
       context.setError(error);
 
       const object = context.toObject();
@@ -223,6 +223,18 @@ describe("XContext", () => {
         secondXContext.prev && (secondXContext.prev as any).prev
       ).toBeFalsy();
     });
+
+    it("should copy error to next instance", () => {
+      const error = new Error("TEST");
+      const context = new XContext(payload);
+      context.setError(error);
+
+      const firstCtx = context.next();
+      const secondCtx = firstCtx.next();
+
+      expect(firstCtx.snapshot().error).toEqual(context.snapshot().error);
+      expect(secondCtx.snapshot().error).toEqual(context.snapshot().error);
+    });
   });
 
   describe("clone", () => {
@@ -259,6 +271,16 @@ describe("XContext", () => {
       expect(snapshot.response).toEqual(cloneSnapshot.response);
       expect(snapshot.metadata).toEqual(cloneSnapshot.metadata);
       expect(snapshot.prev).toBeFalsy();
+    });
+
+    it("should copy error to cloned instance", () => {
+      const error = new Error("TEST");
+      const context = new XContext(payload);
+      context.setError(error);
+
+      const cloneCtx = context.clone();
+
+      expect(cloneCtx.snapshot().error).toEqual(context.snapshot().error);
     });
   });
 
