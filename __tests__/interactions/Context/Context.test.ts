@@ -97,7 +97,6 @@ describe("XContext", () => {
       expect(object.request).toBeTruthy();
       expect(object.response).toBeTruthy();
       expect(object.metadata).toBeTruthy();
-      expect(object.prev).toBeFalsy();
       expect(object.error).toBeFalsy();
     });
 
@@ -113,7 +112,6 @@ describe("XContext", () => {
       expect(object.request).toBeTruthy();
       expect(object.response).toBeTruthy();
       expect(object.metadata).toBeTruthy();
-      expect(object.prev).toBeFalsy();
       expect(object.error?.message).toBe(error.message);
     });
   });
