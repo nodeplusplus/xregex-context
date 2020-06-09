@@ -1,6 +1,6 @@
 {
   "name": "@nodeplusplus/xregex-context",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Manage context of XRegex",
   "main": "lib/index.js",
   "scripts": {
