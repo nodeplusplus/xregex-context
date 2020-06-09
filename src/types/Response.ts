@@ -1,10 +1,11 @@
-import { GenericObject, IMetadata } from ".";
+import { GenericObject } from "./Common";
+import { IMetadata, IMetadataObject } from "./Metadata";
 
 export interface IResponseObject {
   url: string;
   headers: GenericObject;
   redirected: boolean;
-  metadata: GenericObject;
+  metadata: IMetadataObject;
 }
 
 export interface IResponseSnapshot extends IResponseObject {

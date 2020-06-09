@@ -26,8 +26,8 @@ export class Metadata<P extends GenericObject> implements IMetadata<P> {
   }
 
   public get<V = any>(field: string, defaultValue?: any): V {
-    const prop = this.props.get(field);
-    return typeof prop !== "undefined" ? prop : defaultValue;
+    if (!this.has(field)) return defaultValue;
+    return this.props.get(field);
   }
 
   public set(field: string, value: any) {
@@ -36,5 +36,10 @@ export class Metadata<P extends GenericObject> implements IMetadata<P> {
 
   public delete(field: string) {
     this.props = this.props.delete(field);
+  }
+
+  public has(field: string) {
+    const value = this.props.get(field);
+    return typeof value !== "undefined";
   }
 }

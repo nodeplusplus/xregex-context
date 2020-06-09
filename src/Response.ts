@@ -29,11 +29,8 @@ export class Response implements IResponse {
 
   public snapshot() {
     return {
-      url: this.url,
+      ...this.toObject(),
       body: this.body,
-      redirected: this.redirected,
-      headers: this.headers.snapshot(),
-      metadata: this.metadata.snapshot(),
     };
   }
 
@@ -47,10 +44,10 @@ export class Response implements IResponse {
   }
 
   public use(response: Partial<IResponseSnapshot>) {
-    if (response.url) this.url = response.url;
-    if (response.body) this.body = response.body;
+    if (response.url && !this.url) this.url = response.url;
+    if (response.body && !this.body) this.body = response.body;
     if (typeof response.redirected === "boolean") {
-      this.redirected = Boolean(response.redirected);
+      this.redirected = response.redirected;
     }
     if (response.headers) this.headers.use(response.headers);
     if (response.metadata) this.metadata.use(response.metadata);

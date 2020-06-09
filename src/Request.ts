@@ -1,4 +1,4 @@
-import { IRequest, IRequestSnapshot, IMetadata, GenericObject } from "./types";
+import { IRequest, IRequestObject, IMetadata, GenericObject } from "./types";
 import { Metadata } from "./Metadata";
 
 export class Request implements IRequest {
@@ -42,7 +42,7 @@ export class Request implements IRequest {
     return this.snapshot();
   }
 
-  public use(request: Partial<IRequestSnapshot>) {
+  public use(request: Partial<IRequestObject>) {
     if (request.url) this.url = request.url;
     if (request.method) this.method = request.method;
     if (request.headers) this.headers.use(request.headers);

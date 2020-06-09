@@ -10,6 +10,10 @@ export class Pagination implements IPagination {
   }
 
   public snapshot() {
+    return this.toObject();
+  }
+
+  public toObject() {
     const offset = (this.page - 1) * this.limit;
     return {
       page: this.page,

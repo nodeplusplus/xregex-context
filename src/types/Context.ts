@@ -17,15 +17,16 @@ export interface IXContextObject<P = any> {
   response: IResponseObject;
   metadata: Partial<IXContextMetadataSnapshot>;
   pagination: IPaginationSnapshot;
+  error?: IXContextError;
+}
+
+export interface IXContextSnapshot<P = any, I = any>
+  extends IXContextObject<P> {
+  items: I[];
   prev?: IXContextObject;
-  error?: { message: string; stack?: string };
 }
 
-export interface IXContextSnapshot<P = any> extends IXContextObject<P> {
-  items: GenericObject[];
-}
-
-export interface IXContext<P = any> {
+export interface IXContext<P = any, I = any> {
   readonly id: string;
   readonly payload: P;
   readonly request: IRequest;
@@ -37,9 +38,15 @@ export interface IXContext<P = any> {
 
   next(): IXContext<P>;
   clone(payload?: P): IXContext<P>;
-  use(props?: Partial<IXContextSnapshot>): void;
-  snapshot(): IXContextSnapshot;
+  use(props?: Partial<IXContextObject>): void;
+  snapshot(): IXContextSnapshot<P, I>;
   toObject(): IXContextObject;
   setError(error: Error): void;
   hasError(): boolean;
+}
+
+export interface IXContextError extends GenericObject {
+  name: string;
+  message: string;
+  stack?: string;
 }

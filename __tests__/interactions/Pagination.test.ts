@@ -23,11 +23,11 @@ describe("Pagination", () => {
     });
   });
 
-  describe("snapshot", () => {
-    it("should return snapshot succesfully", () => {
+  describe("toObject", () => {
+    it("should return object succesfully", () => {
       const pagination = new Pagination(page, limit);
 
-      expect(pagination.snapshot()).toEqual({
+      expect(pagination.toObject()).toEqual({
         page,
         limit,
         offset: (page - 1) * limit,
@@ -37,7 +37,19 @@ describe("Pagination", () => {
     it("should make sure offset always greater than or equal ZERO", () => {
       const pagination = new Pagination();
 
-      expect(pagination.snapshot()).toEqual({ page: 0, limit: 100, offset: 0 });
+      expect(pagination.toObject()).toEqual({ page: 0, limit: 100, offset: 0 });
+    });
+  });
+
+  describe("snapshot", () => {
+    it("should return snapshot succesfully", () => {
+      const pagination = new Pagination(page, limit);
+
+      expect(pagination.snapshot()).toEqual({
+        page,
+        limit,
+        offset: (page - 1) * limit,
+      });
     });
   });
 

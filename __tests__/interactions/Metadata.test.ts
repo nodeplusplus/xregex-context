@@ -91,4 +91,27 @@ describe("Metadata", () => {
       expect(metadata.get("id")).toBeUndefined();
     });
   });
+
+  describe("has", () => {
+    it("should return FALSE if value was undefined", () => {
+      const props: GenericObject = { id: faker.random.uuid() };
+      const metadata = new Metadata(props);
+
+      expect(metadata.has(faker.internet.userName())).toBeFalsy();
+    });
+
+    it("should return TRUE for other case (even that value was falsy)", () => {
+      const props: GenericObject = {
+        empty_string: "",
+        false_boolean: false,
+        null_null: null,
+        id: faker.random.uuid(),
+      };
+      const metadata = new Metadata(props);
+
+      for (let field of Object.keys(props)) {
+        expect(metadata.has(field)).toBeTruthy();
+      }
+    });
+  });
 });

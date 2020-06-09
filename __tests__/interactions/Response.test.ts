@@ -79,5 +79,28 @@ describe("Response", () => {
         metadata,
       });
     });
+
+    it("only allow override url and body once", () => {
+      const response = new Response();
+      response.use({
+        url,
+        headers,
+        body,
+        redirected,
+        metadata,
+      });
+      response.use({
+        url: faker.internet.url(),
+        body: faker.lorem.paragraphs(),
+      });
+
+      expect(response.snapshot()).toEqual({
+        url,
+        headers,
+        body,
+        redirected,
+        metadata,
+      });
+    });
   });
 });

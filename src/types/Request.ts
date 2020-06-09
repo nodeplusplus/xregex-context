@@ -1,4 +1,5 @@
-import { GenericObject, IMetadata } from ".";
+import { GenericObject } from "./Common";
+import { IMetadata, IMetadataObject } from "./Metadata";
 
 export interface IRequestObject {
   url: string;
@@ -6,7 +7,7 @@ export interface IRequestObject {
   headers: GenericObject;
   body: any;
   timeout: number;
-  metadata: GenericObject;
+  metadata: IMetadataObject;
 }
 
 export interface IRequestSnapshot extends IRequestObject {}
@@ -14,7 +15,7 @@ export interface IRequestSnapshot extends IRequestObject {}
 export interface IRequest {
   metadata: IMetadata;
 
-  use(request: Partial<IRequestSnapshot>): void;
+  use(request: Partial<IRequestObject>): void;
   snapshot(): IRequestSnapshot;
   toObject(): IRequestObject;
 }

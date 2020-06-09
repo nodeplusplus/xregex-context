@@ -3,12 +3,12 @@ import _ from "lodash";
 
 import {
   IXContext,
+  IXContextSnapshot,
+  IXContextError,
   IRequest,
   IResponse,
   IMetadata,
-  IXContextSnapshot,
   IXContextMetadataSnapshot,
-  GenericObject,
   IXContextObject,
   DeepPartial,
   IPagination,
@@ -18,7 +18,7 @@ import { Response } from "../Response";
 import { Pagination } from "../Pagination";
 import { XContextMetadata } from "./Metadata";
 
-export class XContext<P = any> implements IXContext<P> {
+export class XContext<P = any, I = any> implements IXContext<P, I> {
   public readonly payload: P;
   public readonly id: string;
   public readonly request: IRequest;
@@ -27,8 +27,8 @@ export class XContext<P = any> implements IXContext<P> {
   public readonly pagination: IPagination;
   public readonly prev?: Readonly<IXContextObject>;
 
-  public readonly items: GenericObject[] = [];
-  private error?: { name: string; message: string; stack?: string };
+  public readonly items: I[] = [];
+  private error?: IXContextError;
 
   constructor(
     payload: P,
@@ -93,6 +93,7 @@ export class XContext<P = any> implements IXContext<P> {
     if (props.response) this.response.use(props.response);
     if (props.metadata) this.metadata.use(props.metadata);
     if (props.pagination) this.pagination.use(props.pagination);
+    // also dont allow override both .prev and .error
   }
 
   public snapshot() {

@@ -7,7 +7,8 @@ export interface IPaginationObject {
 export interface IPaginationSnapshot extends IPaginationObject {}
 
 export interface IPagination {
-  use(pagination: Partial<IPaginationSnapshot>): void;
+  use(pagination: Partial<IPaginationObject>): void;
   snapshot(): IPaginationSnapshot;
+  toObject(): IPaginationObject;
   next(): IPagination;
 }
