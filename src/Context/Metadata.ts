@@ -3,7 +3,7 @@ import { Metadata } from "../Metadata";
 
 export class XContextMetadata extends Metadata<IXContextMetadataSnapshot> {
   constructor(props?: Partial<IXContextMetadataSnapshot>) {
-    super({ ...props, round: 0 });
+    super({ round: 0, ...props });
   }
 
   public next() {
