@@ -114,4 +114,46 @@ describe("Metadata", () => {
       }
     });
   });
+
+  describe("increase", () => {
+    it("should return ZERO if preivous value is not a finite number", () => {
+      const id = faker.random.uuid();
+      const metadata = new Metadata({ [id]: "1" });
+      expect(metadata.increase(id)).toBe(0);
+    });
+
+    it("should increase with default value", () => {
+      const id = faker.random.uuid();
+      const metadata = new Metadata({ [id]: 0 });
+      expect(metadata.increase(id)).toBe(1);
+    });
+
+    it("should increase with custom value", () => {
+      const id = faker.random.uuid();
+      const count = faker.random.number();
+      const metadata = new Metadata({ [id]: 0 });
+      expect(metadata.increase(id, count)).toBe(count);
+    });
+  });
+
+  describe("decrease", () => {
+    it("should return ZERO if preivous value is not a finite number", () => {
+      const id = faker.random.uuid();
+      const metadata = new Metadata({ [id]: "1" });
+      expect(metadata.decrease(id)).toBe(0);
+    });
+
+    it("should decrease with default value", () => {
+      const id = faker.random.uuid();
+      const metadata = new Metadata({ [id]: 1 });
+      expect(metadata.decrease(id)).toBe(0);
+    });
+
+    it("should decrease with custom value", () => {
+      const id = faker.random.uuid();
+      const count = faker.random.number();
+      const metadata = new Metadata({ [id]: count });
+      expect(metadata.decrease(id, count)).toBe(0);
+    });
+  });
 });

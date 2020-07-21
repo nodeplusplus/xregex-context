@@ -5,6 +5,8 @@ export interface IMetadata<O = IMetadataObject, S = IMetadataSnapshot> {
   set(field: string, value: any): void;
   delete(field: string): void;
   has(field: string): boolean;
+  increase(field: string, count: number): number;
+  decrease(field: string, count: number): number;
   snapshot(): S;
   next(): IMetadata<O, S>;
   use(metadata: Partial<O>): void;

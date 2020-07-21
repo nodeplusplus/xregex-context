@@ -42,4 +42,24 @@ export class Metadata<P extends GenericObject> implements IMetadata<P> {
     const value = this.props.get(field);
     return typeof value !== "undefined";
   }
+
+  public increase(field: string, count = 1) {
+    const previous = this.get(field, 0);
+    if (!Number.isFinite(previous)) return 0;
+
+    const current = previous + count;
+    this.set(field, current);
+
+    return current;
+  }
+
+  public decrease(field: string, count = 1) {
+    const previous = this.get(field, 0);
+    if (!Number.isFinite(previous)) return 0;
+
+    const current = previous - count;
+    this.set(field, current);
+
+    return current;
+  }
 }
