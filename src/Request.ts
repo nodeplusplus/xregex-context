@@ -6,7 +6,8 @@ export class Request implements IRequest {
   private method: string;
   private body: any;
   private headers: IMetadata;
-  private timeout: number;
+  private timeout?: number;
+  private json?: boolean;
 
   public readonly metadata: IMetadata;
 
@@ -16,13 +17,15 @@ export class Request implements IRequest {
     headers?: GenericObject,
     body?: any,
     timeout?: number,
-    metadata?: GenericObject
+    metadata?: GenericObject,
+    json?: boolean
   ) {
     this.url = url || "";
     this.method = method || "GET";
     this.headers = new Metadata(headers);
     this.body = body;
-    this.timeout = timeout || 60000;
+    this.timeout = timeout;
+    this.json = json;
 
     this.metadata = new Metadata(metadata);
   }
@@ -34,6 +37,7 @@ export class Request implements IRequest {
       body: this.body,
       headers: this.headers.snapshot(),
       timeout: this.timeout,
+      json: this.json,
       metadata: this.metadata.snapshot(),
     };
   }
@@ -48,6 +52,7 @@ export class Request implements IRequest {
     if (request.headers) this.headers.use(request.headers);
     if (request.body) this.body = request.body;
     if (request.timeout) this.timeout = request.timeout;
+    if (request.json) this.json = request.json;
 
     if (request.metadata) this.metadata.use(request.metadata);
   }

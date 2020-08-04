@@ -18,7 +18,8 @@ export class Factory {
       props.headers,
       props.body,
       props.timeout,
-      props.metadata
+      props.metadata,
+      props.json
     );
   }
 

@@ -6,7 +6,8 @@ export interface IRequestObject {
   method: string;
   headers: GenericObject;
   body: any;
-  timeout: number;
+  timeout?: number;
+  json?: boolean;
   metadata: IMetadataObject;
 }
 

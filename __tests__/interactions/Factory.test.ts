@@ -8,6 +8,7 @@ describe("Factory", () => {
     const headers = { "Content-Type": "application/json" };
     const body = { username: faker.internet.userName() };
     const timeout = 30000;
+    const json = true;
     const metadata = { "proxy/id": `${faker.internet.ip()}` };
 
     it("should create fresh request successfully", () => {
@@ -18,7 +19,8 @@ describe("Factory", () => {
         method: "GET",
         headers: {},
         body: undefined,
-        timeout: 60000,
+        timeout: undefined,
+        json: undefined,
         metadata: {},
       });
     });
@@ -31,6 +33,7 @@ describe("Factory", () => {
         body,
         timeout,
         metadata,
+        json,
       });
 
       expect(request.snapshot()).toEqual({
@@ -40,6 +43,7 @@ describe("Factory", () => {
         body,
         timeout,
         metadata,
+        json,
       });
     });
   });

@@ -8,6 +8,7 @@ describe("Request", () => {
   const headers = { "Content-Type": "application/json" };
   const body = { username: faker.internet.userName() };
   const timeout = 30000;
+  const json = true;
   const metadata = { "proxy/id": `${faker.internet.ip()}` };
 
   describe("constructor", () => {
@@ -18,7 +19,8 @@ describe("Request", () => {
         headers,
         body,
         timeout,
-        metadata
+        metadata,
+        json
       );
 
       expect(_.get(request, "url")).toBe(url);
@@ -26,6 +28,7 @@ describe("Request", () => {
       expect(_.get(request, "headers")).toEqual(new Metadata(headers));
       expect(_.get(request, "body")).toEqual(body);
       expect(_.get(request, "timeout")).toBe(timeout);
+      expect(_.get(request, "json")).toBe(json);
       expect(_.get(request, "metadata")).toEqual(new Metadata(metadata));
     });
 
@@ -36,7 +39,8 @@ describe("Request", () => {
       expect(_.get(request, "method")).toBe("GET");
       expect(_.get(request, "headers")).toEqual(new Metadata());
       expect(_.get(request, "body")).toBeUndefined();
-      expect(_.get(request, "timeout")).toBe(60000);
+      expect(_.get(request, "timeout")).toBeUndefined();
+      expect(_.get(request, "json")).toBeUndefined();
       expect(_.get(request, "metadata")).toEqual(new Metadata());
     });
   });
@@ -49,7 +53,8 @@ describe("Request", () => {
         headers,
         body,
         timeout,
-        metadata
+        metadata,
+        json
       );
 
       expect(request.snapshot()).toEqual({
@@ -59,6 +64,7 @@ describe("Request", () => {
         headers,
         timeout,
         metadata,
+        json,
       });
     });
   });
@@ -71,7 +77,8 @@ describe("Request", () => {
         headers,
         body,
         timeout,
-        metadata
+        metadata,
+        json
       );
 
       expect(request.toObject()).toEqual({
@@ -81,6 +88,7 @@ describe("Request", () => {
         headers,
         timeout,
         metadata,
+        json,
       });
     });
   });
@@ -95,6 +103,7 @@ describe("Request", () => {
         body,
         timeout,
         metadata,
+        json,
       });
       request.use({});
 
@@ -105,6 +114,7 @@ describe("Request", () => {
         headers,
         timeout,
         metadata,
+        json,
       });
     });
   });
